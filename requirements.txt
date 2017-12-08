@@ -1,3 +1,1 @@
-#Django needed. Do you know it?)
-django
 boto
