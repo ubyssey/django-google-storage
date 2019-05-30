@@ -1,11 +1,6 @@
 # coding=utf-8
 from django.core.files.base import File
-
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
-
+from io import StringIO
 
 class GSBotoStorageFile(File):
     def __init__(self, name, mode, storage):
