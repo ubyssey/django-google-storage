@@ -5,7 +5,7 @@ import mimetypes
 from django.conf import settings
 from django.core.files.storage import Storage
 from django.core.exceptions import ImproperlyConfigured, SuspiciousOperation
-from django.utils.encoding import force_unicode, smart_str
+from django.utils.encoding import force_text, smart_bytes
 
 from .format import SubdomainCallingFormat
 from .file import GSBotoStorageFile
@@ -126,10 +126,10 @@ class GoogleStorage(Storage):
             raise SuspiciousOperation("Attempted access to '%s' denied." % name)
 
     def _encode_name(self, name):
-        return smart_str(name, encoding=self.file_name_charset)
+        return smart_bytes(name, encoding=self.file_name_charset)
 
     def _decode_name(self, name):
-        return force_unicode(name, encoding=self.file_name_charset)
+        return force_text(name, encoding=self.file_name_charset)
 
     def _open(self, name, mode='rb'):
         name = self._normalize_name(self._clean_name(name))
