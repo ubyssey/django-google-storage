@@ -1,6 +1,6 @@
 # coding=utf-8
 from django.core.files.base import File
-from io import StringIO
+from io import BytesIO
 
 class GSBotoStorageFile(File):
     def __init__(self, name, mode, storage):
@@ -18,20 +18,20 @@ class GSBotoStorageFile(File):
     @property
     def file(self):
         if self._file is None:
-            self._file = StringIO()
-            if 'r' in self._mode:
+            self._file = BytesIO()
+            if 'rb' in self._mode:
                 self._is_dirty = False
                 self.key.get_contents_to_file(self._file)
                 self._file.seek(0)
         return self._file
 
     def read(self, *args, **kwargs):
-        if 'r' not in self._mode:
+        if 'rb' not in self._mode:
             raise AttributeError("File was not opened in read mode.")
         return super(GSBotoStorageFile, self).read(*args, **kwargs)
 
     def write(self, *args, **kwargs):
-        if 'w' not in self._mode:
+        if 'wb' not in self._mode:
             raise AttributeError("File was opened for read-only access.")
         self._is_dirty = True
         return super(GSBotoStorageFile, self).write(*args, **kwargs)
